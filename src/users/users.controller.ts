@@ -13,6 +13,7 @@ import { UsersService } from './users.service';
 import { UserSignupDto } from './dto/user-signup.dto';
 import { UserEntity } from './entities/user.entity';
 import { UserSignInDto } from './dto/user-signin.dto';
+import { currentUser } from 'src/utils/decorators/current-user.decorator';
 
 @Controller('users')
 export class UsersController {
@@ -52,6 +53,11 @@ export class UsersController {
   @Get('single/:id')
   async findOne(@Param('id') id: string): Promise<UserEntity> {
     return await this.usersService.findOne(+id);
+  }
+
+  @Get('me')
+  getProfile(@currentUser() currentUser: UserEntity) {
+    return currentUser;
   }
 
   @Patch(':id')
